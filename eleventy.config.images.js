@@ -26,7 +26,7 @@ module.exports = function (eleventyConfig) {
 			src,
 			alt,
 			widths = [400, 800, 1200],
-			sizes = "100vw"
+			sizes = "100vw",
 		) {
 			// Full list of formats here: https://www.11ty.dev/docs/plugins/image/#output-formats
 			// Warning: Avif can be resource-intensive so take care!
@@ -54,6 +54,6 @@ module.exports = function (eleventyConfig) {
 
 			let html = eleventyImage.generateHTML(metadata, imageAttributes);
 			return html;
-		}
+		},
 	);
 };
