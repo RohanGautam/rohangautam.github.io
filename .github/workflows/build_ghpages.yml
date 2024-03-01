@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
 
     steps:
       - name: Use Node.js
@@ -17,6 +20,7 @@ jobs:
 
       - name: Install dependencies & build
         run: |
+          pwd
           yarn install
           yarn build
 
