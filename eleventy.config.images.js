@@ -31,16 +31,25 @@ module.exports = function (eleventyConfig) {
 			// Full list of formats here: https://www.11ty.dev/docs/plugins/image/#output-formats
 			// Warning: Avif can be resource-intensive so take care!
 			let formats = ["avif", "webp"];
+
 			let input;
 			if (isFullUrl(src)) {
 				input = src;
 			} else {
 				input = relativeToInputPath(this.page.inputPath, src);
 			}
+			// if a gif provided, output that
+			if (input.endsWith(".gif")) {
+				formats = ["gif"];
+			}
 
 			let metadata = await eleventyImage(input, {
 				widths: widths,
 				formats,
+				sharpOptions: {
+					animated: true,
+					fit: "contain",
+				},
 				outputDir: path.join(eleventyConfig.dir.output, "img"), // Advanced usage note: `eleventyConfig.dir` works here because we’re using addPlugin.
 			});
 
