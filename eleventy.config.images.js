@@ -61,6 +61,7 @@ module.exports = function (eleventyConfig) {
 				decoding: "async",
 			};
 
+			// TODO edit to add custom html allowing for figure captions
 			let html = eleventyImage.generateHTML(metadata, imageAttributes);
 			return html;
 		},
