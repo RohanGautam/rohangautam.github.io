@@ -65,7 +65,6 @@ We can think of splines as combining many low-order (often cubic) polynomials in
 | **Flexibility**        | Less flexible for complex shapes                                   | More flexible                                                                                                                                                                     |
 
 {% image "Pasted image 20240618140850.png","-" %}
-// image of a B spline, with piecewise components highlighted. Highlight the knots (where polynomials join) and the control points (which control the spline, and do not necessarily lie on the curve.)
 
 ## Continuity
 
@@ -75,13 +74,11 @@ There can be some physical intuition here, because if you imagine a tangent vect
 
 In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at the joins, and implies that the lower ( $(n-1 ... 0)^{th}$) derivatives also exist and are continuous. A higher $n$ gives us a smoother curve.
 {% image "Pasted image 20240618150758.png","-" %}
-// image of continuity order 0,1,2
 
 ## Basis functions
 
 I want to touch on the intuition behind basis functions before we jump into B-splines. Like mentioned before, splines have a key property of _local control_, wherein moving a control point only effects a fixed region near itself instead of affecting the entire curve. This "influence" that a control point has is determined by it's basis function, and there are as many basis functions as there are control points. A widely spread out basis function for a specific control point would imply that moving the control point can affect a larger part of the curve. The animation below represents this quite well.
 {% image "b_spline_influence.gif","-" %}
-// an animation highlighting the basis function on one control points neighbourhood on the curve.
 
 # B splines
 
@@ -120,9 +117,6 @@ $$
 Plotting the functions influencing each control point, we can see the cubic B spline basis functions look like this ([graph on desmos](https://www.desmos.com/calculator/ubtrhyjn0m)):
 {% image "Pasted image 20240617111409.png","-" %}
 These represent the influences of the 4 control points throughout one cubic piece of a spline. Alternatively, you can see the influence of the control points on the _whole_ spline in the animated figure in the basis functions section.
-
-// todo: reconstruct this in python, another view where this is rearranged to see the influence of one control point. maybe highlighting what view you're considering would be nice? like an eye from a control point vs a point on the spline.
-We can see from the alternative view of basis functions that one control point exerts maximum influence close to itself, and this influence diminishes away from it. In the first view, we see that at any given point _on the spline_, the different influences acting on it. ==does this belong in the basis function section?==
 
 ## Cox–de Boor recursion formula
 
