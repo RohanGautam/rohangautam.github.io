@@ -10,13 +10,16 @@ tags:
 
 In this blog series, I'll be going through the technical details involved in understanding [Kolmogorov-Arnold Networks](https://arxiv.org/pdf/2404.19756) - a new type of machine learning architecture which has gotten significant attention lately due to it's several advantages over MLPs - interpretability and avoiding catastrophic forgetting, to name a few.
 
-In part one of this series, let's build our understanding up to B-splines, the workhorse of the Kolmogorov-Arnold Network (KAN). B splines are used in KANs to learn activation functions. Let's start with simple polynomial interpolation.
+Table of Contents:
 
 [[toc]]
+
+In part one of this series, let's build our understanding up to B-splines, the workhorse of the Kolmogorov-Arnold Network (KAN). B splines are used in KANs to learn activation functions. Let's start with simple polynomial interpolation.
 
 # Polynomial interpolation
 
 The goal of polynomial interpolation is to find the coefficients of a polynomial $a_0 +  a_1x + a_2x^2 + ... a_nx^n$ , such that it passes through your data points.
+
 For example, if we had 4 data points $[(x_1,y_1), (x_2,y_2),(x_3,y_3),(x_4,y_4)]$, we could fit a cubic polynomial $a_0 +  a_1x + a_2x^2 + a_3x^3$ through it by solving for $a_i$ in the following system of equations:
 
 $$
@@ -66,7 +69,9 @@ We can think of splines as combining many low-order (often cubic) polynomials in
 
 ## Continuity
 
-So splines are connected at points called _knots_ or joins, and their overall shape is determined by user-defined _control points_. Continuity (or "smoothness") is a measure of how smoothly one polynomial connects to the other. When thinking of smoothness, one can naturally think of having a continuous rate of change, and this is indeed a form of continuity, called $C^1$ continuity, where the first derivative is continuous at the joins. There can be some physical intuition here, because if you imagine a tangent vector moving along the spline, $C^1$ continuity implies it moving at a continuous speed (the first derivative of distance with respect to time). Notably, there is no abrupt change of speed **at the join** in particular, because before the join, we're on a smooth polynomial anyway. $C^2$ continuity would imply no sudden change of acceleration at the join, and so on. The lovely video by Freya Holmér on [the continuity of splines](https://www.youtube.com/watch?v=jvPPXbo87ds) beautifully explains and animates continuity measures, including other ones, like geometric continuity which we won't get into here.
+So splines are connected at points called _knots_ or joins, and their overall shape is determined by user-defined _control points_. Continuity (or "smoothness") is a measure of how smoothly one polynomial connects to the other. When thinking of smoothness, one can naturally think of having a continuous rate of change, and this is indeed a form of continuity, called $C^1$ continuity, where the first derivative is continuous at the joins.
+
+There can be some physical intuition here, because if you imagine a tangent vector moving along the spline, $C^1$ continuity implies it moving at a continuous speed (the first derivative of distance with respect to time). Notably, there is no abrupt change of speed **at the join** in particular, because before the join, we're on a smooth polynomial anyway. $C^2$ continuity would imply no sudden change of acceleration at the join, and so on. The lovely video by Freya Holmér on [the continuity of splines](https://www.youtube.com/watch?v=jvPPXbo87ds) beautifully explains and animates continuity measures, including other ones, like geometric continuity which we won't get into here.
 
 In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at the joins, and implies that the lower ( $(n-1 ... 0)^{th}$) derivatives also exist and are continuous. A higher $n$ gives us a smoother curve.
 {% image "Pasted image 20240618150758.png","-" %}
