@@ -8,6 +8,13 @@ tags:
   - KAN
 ---
 
+<style>
+.katex-display {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+</style>
+
 In this blog series, I'll be going through the technical details involved in understanding [Kolmogorov-Arnold Networks](https://arxiv.org/pdf/2404.19756) - a new type of machine learning architecture which has gotten significant attention lately due to it's several advantages over MLPs - interpretability and avoiding catastrophic forgetting, to name a few.
 
 Table of Contents:
