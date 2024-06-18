@@ -2,6 +2,7 @@ const { DateTime } = require("luxon");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItFootnote = require("markdown-it-footnote");
 const markdownItLatex = require("markdown-it-katex");
+const markdownItToc = require("markdown-it-toc-done-right");
 
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
@@ -98,6 +99,7 @@ module.exports = function (eleventyConfig) {
 		});
 		mdLib.use(markdownItFootnote);
 		mdLib.use(markdownItLatex);
+		mdLib.use(markdownItToc);
 	});
 
 	// Features to make your build faster (when you need them)
