@@ -1,5 +1,5 @@
 ---
-title: (Road to KAN part 1) A gentle introduction to B-splines
+title: (KANs part 1) An introduction to B-splines
 date: 2024-06-18
 description: "Let's talk about B-splines, a popular approximation and interpolation curve, and the workhorse of the Kolmogorov-Arnold network"
 tags:
