@@ -11,6 +11,7 @@ tags:
 <style>
 .katex-display {
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
 }
 </style>
@@ -53,6 +54,7 @@ $$
 
 Here's an example of the fit with some toy data:
 {% image "Pasted image 20240616150014.png","A cubic polynomial fit on some test data points " %}
+
 You'd need a polynomial of degree $n-1$, to pass through $n$ data points. A higher polynomial degree $n-1$ would imply non-unique solutions, and a lower polynomial degree would imply non-existence of a solution (unless in special cases). Let's see what a higher order polynomial fit looks like:
 {% image "Pasted image 20240616151313.png","Fitting a polynomial of order 9 on 10 data points." %}
 
