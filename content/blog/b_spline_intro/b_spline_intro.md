@@ -89,6 +89,8 @@ In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at
 I want to touch on the intuition behind basis functions before we jump into B-splines. Like mentioned before, splines have a key property of _local control_, wherein moving a control point only effects a fixed region near itself instead of affecting the entire curve. This "influence" that a control point has is determined by it's basis function, and there are as many basis functions as there are control points. A widely spread out basis function for a specific control point would imply that moving the control point can affect a larger part of the curve. The animation below represents this quite well.
 {% image "b_spline_influence.gif","Influence of control points on the region of a spline, as governed by the basis functions" %}
 
+I found that the [Scipy docs on B spline basis functions](https://docs.scipy.org/doc/scipy/tutorial/interpolate/splines_and_polynomials.html#b-spline-basis-elements) are also a useful read!
+
 # B-splines
 
 B-splines are cool, as they are $C^2$ continuous (read: it's quite smooth) and have local control. Also, they are spline's that don't necessarily pass through their control points! In other words, they can be made to be both approximating splines(don't pass through all control points), or interpolating splines(pass through all control points, like with [scipy.interpolate.splrep](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.splrep.html)). In this article, we'll focus on approximating splines, as our end goal involves making use of _approximating_ B-splines to learn activation functions in a KAN. generates _interpolating_ B-splines.
