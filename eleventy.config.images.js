@@ -25,6 +25,7 @@ module.exports = function (eleventyConfig) {
 		async function imageShortcode(
 			src,
 			alt,
+			figure = false,
 			widths = [400, 800, 1200],
 			sizes = "100vw",
 		) {
@@ -61,9 +62,13 @@ module.exports = function (eleventyConfig) {
 				decoding: "async",
 			};
 
-			// TODO edit to add custom html allowing for figure captions
 			let html = eleventyImage.generateHTML(metadata, imageAttributes);
-			return html;
+			if (figure) {
+				// add alt text as figure caption
+				return `<figure>${html}<figcaption>${alt}</figcaption></figure>`;
+			} else {
+				return html;
+			}
 		},
 	);
 };

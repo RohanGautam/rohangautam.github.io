@@ -66,7 +66,7 @@ We can think of splines as combining many low-order polynomials in order to crea
 
 Splines can be either interpolating (passing through all the data points, also called _control points_), or approximating (not necessarily passing though the data points).
 
-Let's first see how splines can be better than polynomial _interpolation_ (the same points apply for approximation tasks as well):
+Let's first see how splines can be better than polynomial _interpolation_ (the same points below apply for approximation tasks as well):
 
 | Feature                | Polynomial Interpolation                                           | Spline Interpolation                                                                                                                                                              |
 | ---------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -92,7 +92,8 @@ In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at
 
 ## Basis functions
 
-I want to touch on the intuition behind basis functions before we jump into B-splines. Like mentioned before, splines have a key property of _local control_, wherein moving a control point only effects a fixed region near itself instead of affecting the entire curve. This "influence" that a control point has is determined by it's basis function, and there are as many basis functions as there are control points. A widely spread out basis function for a specific control point would imply that moving the control point can affect a larger part of the curve. The animation below represents this quite well.
+I want to touch on the intuition behind basis functions before we jump into B-splines. We mentioned that control points affect the geometric shape of the curve, but how? They do this by using their corresponding basis function. The influence or "pull" that a control point has is determined by it's basis function, and there are as many basis functions as there are control points. A widely spread out basis function for a specific control point would imply that moving the control point can affect a larger part of the curve. The animation below represents this quite well.
+
 {% image "b_spline_influence.gif","Influence of control points on the region of a spline, as governed by the basis functions" %}
 
 I found that the [Scipy docs on B spline basis functions](https://docs.scipy.org/doc/scipy/tutorial/interpolate/splines_and_polynomials.html#b-spline-basis-elements) are also a useful read!
@@ -116,19 +117,19 @@ $$
 -1 & 3 & -3 & 1
 \end{bmatrix}
 \begin{bmatrix}
-\color{red}{\mathbf{P}_a} \\
-\color{lightblue}{\mathbf{P}_b} \\
-\color{green}{\mathbf{P}_c} \\
-\color{yellow}{\mathbf{P}_d}
+\mathbf{P}_a \\
+\mathbf{P}_b \\
+\mathbf{P}_c \\
+\mathbf{P}_d
 \end{bmatrix}
 $$
 
-where $\color{red}{\mathbf{P}_a}, \color{lightblue}{\mathbf{P}_b}, \color{green}{\mathbf{P}_c}, \color{yellow}{\mathbf{P}_d}$ represent the 4 control points that are needed to define a cubic polynomial. Each of the 4 consecutive control points form the polynomial pieces stitched together. Note that B-splines represent parameterised curves, so $t$ goes between $0$ and $1$, giving us our final curve $P(t)$ as a vector, equating to $[x(t), y(t)]^T$.
+where $\mathbf{P}_a, \mathbf{P}_b, \mathbf{P}_c, \mathbf{P}_d$ represent the 4 control points that are needed to define a cubic polynomial. Each of the 4 consecutive control points form the polynomial pieces stitched together. Note that B-splines represent parameterised curves, so $t$ goes between $0$ and $1$, giving us our final curve $P(t)$ as a vector, equating to $[x(t), y(t)]^T$.
 
 Expanding, we get our basis functions, which determine the influence that each of the 4 control points have on any given point on our spline. The matrix of numbers in the equation from which we expand might look arbitrary, but these values can actually be solved for provided our constraints for the B-spline, namely $C^2$ continuity and the requirement that the basis functions(influences) sum up to one (to avoid arbitrary scaling effects).
 
 $$
-\mathbf{P}(t) = \frac{1}{6} \left[ (1 - 3t + 3t^2 - t^3)\color{red}{\mathbf{P}_a} + (4 - 6t^2 + 3t^3)\color{lightblue}{\mathbf{P}_b} + (1 + 3t + 3t^2 - 3t^3)\color{green}{\mathbf{P}_c} + t^3\color{yellow}{\mathbf{P}_d} \right]
+\mathbf{P}(t) = \frac{1}{6} \left[ (1 - 3t + 3t^2 - t^3)\mathbf{P}_a + (4 - 6t^2 + 3t^3)\mathbf{P}_b + (1 + 3t + 3t^2 - 3t^3)\mathbf{P}_c + t^3\mathbf{P}_d \right]
 $$
 
 Plotting the functions influencing each control point, we can see the cubic B-spline basis functions look like this ([graph on desmos](https://www.desmos.com/calculator/ubtrhyjn0m)):
