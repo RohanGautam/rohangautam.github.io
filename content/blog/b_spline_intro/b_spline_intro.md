@@ -62,7 +62,11 @@ This interpolation looks reasonable in the middle, but what's going on at the ed
 
 # Splines
 
-We can think of splines as combining many low-order (often cubic) polynomials in order to create a more complex, smooth curve. Splines have many varieties, mostly involving different ways these individual polynomial pieces can be joined, such that they smoothly flow from one to the other, enforcing certain _continuity_ measures. We'll take a look at continuity soon. But first, let's see how these can be better than polynomial interpolation:
+We can think of splines as combining many low-order polynomials in order to create a more complex, smooth curve. These low order polynomials are often cubic, since cubic polynomials offer a good tradeoff between expressivity and complexity. Splines have many varieties, mostly involving different ways these individual polynomial pieces can be joined, such that they smoothly flow from one to the other.
+
+Splines can be either interpolating (passing through all the data points, also called _control points_), or approximating (not necessarily passing though the data points).
+
+Let's first see how splines can be better than polynomial _interpolation_ (the same points apply for approximation tasks as well):
 
 | Feature                | Polynomial Interpolation                                           | Spline Interpolation                                                                                                                                                              |
 | ---------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -73,11 +77,13 @@ We can think of splines as combining many low-order (often cubic) polynomials in
 | **Efficiency**         | Computationally intensive for large datasets                       | More efficient for large datasets due to local computation                                                                                                                        |
 | **Flexibility**        | Less flexible for complex shapes                                   | More flexible                                                                                                                                                                     |
 
+The overall geometric shape of the spline is determined by user-specified _control points_. The individual polynomial pieces are connected at points called _knots_. The knots determine how and where the spline is split up into smaller polynomials. In some splines, like the [Catmull-Rom spline](https://en.wikipedia.org/wiki/Cubic_Hermite_spline#Catmull%E2%80%93Rom_spline), the knots can be the same as the control points. However, this is not always the case. For example, in approximating B-splines, since the final curve does not necessarily pass through the control points, the piecewise polynomials are not joint at the control points but at some other approximated location. Hence we can see that the knots are not the same as the control points.
+
 {% image "Pasted image 20240618140850.png","A B-spline with control points, knots, and piecewise polynomials highlighted." %}
 
 ## Continuity
 
-So splines are connected at points called _knots_ or joins, and their overall shape is determined by user-defined _control points_. Continuity (or "smoothness") is a measure of how smoothly one polynomial connects to the other. When thinking of smoothness, one can naturally think of having a continuous rate of change, and this is indeed a form of continuity, called $C^1$ continuity, where the first derivative is continuous at the joins.
+Continuity (or "smoothness") is a measure of how smoothly one polynomial connects to the other. When thinking of smoothness, one can naturally think of having a continuous rate of change, and this is indeed a form of continuity, called $C^1$ continuity, where the first derivative is continuous at the joins.
 
 There can be some physical intuition here, because if you imagine a tangent vector moving along the spline, $C^1$ continuity implies it moving at a continuous speed (the first derivative of distance with respect to time). Notably, there is no abrupt change of speed **at the join** in particular, because before the join, we're on a smooth polynomial anyway. $C^2$ continuity would imply no sudden change of acceleration at the join, and so on. The lovely video by Freya Holmér on [the continuity of splines](https://www.youtube.com/watch?v=jvPPXbo87ds) beautifully explains and animates continuity measures, including other ones, like geometric continuity which we won't get into here.
 
@@ -93,7 +99,7 @@ I found that the [Scipy docs on B spline basis functions](https://docs.scipy.org
 
 # B-splines
 
-B-splines are cool, as they are $C^2$ continuous (read: it's quite smooth) and have local control. Also, they are spline's that don't necessarily pass through their control points! In other words, they can be made to be both approximating splines(don't pass through all control points), or interpolating splines(pass through all control points, like with [scipy.interpolate.splrep](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.splrep.html)). In this article, we'll focus on approximating splines, as our end goal involves making use of _approximating_ B-splines to learn activation functions in a KAN. generates _interpolating_ B-splines.
+B-splines are cool, as they are $C^2$ continuous (read: it's quite smooth) and have local control. Also, they are spline's that don't necessarily pass through their control points! In other words, they can be made to be both approximating splines(don't pass through all control points), or interpolating splines(pass through all control points, like with [scipy.interpolate.splrep](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.splrep.html)). We'll focus on _approximating splines_, as our end goal involves making use of them to learn activation functions in a KAN.
 
 In cubic B-splines, each piecewise polynomial is expressed as
 
@@ -117,7 +123,7 @@ $$
 \end{bmatrix}
 $$
 
-where $\color{red}{\mathbf{P}_a}, \color{lightblue}{\mathbf{P}_b}, \color{green}{\mathbf{P}_c}, \color{yellow}{\mathbf{P}_d}$ represent the 4 control points that are needed to define a cubic polynomial. Each of the 4 consecutive points from a given set of control points form the polynomial pieces stitched together. Note that B-splines represent parameterised curves, so $t$ goes between $0$ and $1$, giving us our final curve $P(t)$ as a vector, equating to $[x(t), y(t)]^T$.
+where $\color{red}{\mathbf{P}_a}, \color{lightblue}{\mathbf{P}_b}, \color{green}{\mathbf{P}_c}, \color{yellow}{\mathbf{P}_d}$ represent the 4 control points that are needed to define a cubic polynomial. Each of the 4 consecutive control points form the polynomial pieces stitched together. Note that B-splines represent parameterised curves, so $t$ goes between $0$ and $1$, giving us our final curve $P(t)$ as a vector, equating to $[x(t), y(t)]^T$.
 
 Expanding, we get our basis functions, which determine the influence that each of the 4 control points have on any given point on our spline. The matrix of numbers in the equation from which we expand might look arbitrary, but these values can actually be solved for provided our constraints for the B-spline, namely $C^2$ continuity and the requirement that the basis functions(influences) sum up to one (to avoid arbitrary scaling effects).
 
