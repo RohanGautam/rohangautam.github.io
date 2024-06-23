@@ -301,6 +301,8 @@ If you have any feedback, leave them with the blog title on [Issues · RohanGaut
 
 # Citation
 
+BibTeX:
+
 ```
 @article{rohan2024bspline,
   title   = "(KANs part 1) An introduction to B-splines",
