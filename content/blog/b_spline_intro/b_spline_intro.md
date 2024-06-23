@@ -53,10 +53,10 @@ y_4
 $$
 
 Here's an example of the fit with some toy data:
-{% image "Pasted image 20240616150014.png","A cubic polynomial fit on some test data points " %}
+{% image "Pasted image 20240616150014.png","Fig 1: A cubic polynomial fit on some test data points.", true %}
 
 You'd need a polynomial of degree $n-1$, to pass through $n$ data points. A higher polynomial degree $n-1$ would imply non-unique solutions, and a lower polynomial degree would imply non-existence of a solution (unless in special cases). Let's see what a higher order polynomial fit looks like:
-{% image "Pasted image 20240616151313.png","Fitting a polynomial of order 9 on 10 data points." %}
+{% image "Pasted image 20240616151313.png","Fig 2: Fitting a polynomial of order 9 on 10 data points.", true %}
 
 This interpolation looks reasonable in the middle, but what's going on at the edges? Those jumps look a bit too extreme. Well, we've encountered the well-known [Runge's phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon), where higher degree polynomials oscillate at the edges. This leads us to one of the many motivations behind using splines for interpolation.
 
@@ -79,7 +79,7 @@ Let's first see how splines can be better than polynomial _interpolation_ (the s
 
 The overall geometric shape of the spline is determined by user-specified _control points_. The individual polynomial pieces are connected at points called _knots_. The knots determine how and where the spline is split up into smaller polynomials. The knots can be any increasing sequence of numbers. In some splines, like the [Catmull-Rom spline](https://en.wikipedia.org/wiki/Cubic_Hermite_spline#Catmull%E2%80%93Rom_spline), the knots can be the same as the control points. However, this is not always the case. For example, in approximating B-splines, since the final curve does not necessarily pass through the control points, the piecewise polynomials are not joint at the control points but at some other approximated location. Hence we can see that the knots are not the same as the control points. We will look at different types of knot vector constructions later in this article.
 
-{% image "Pasted image 20240618140850.png","A B-spline with control points, knots, and piecewise polynomials highlighted." %}
+{% image "Pasted image 20240618140850.png","Fig 3: A B-spline with control points, knots, and piecewise polynomials highlighted.", true %}
 
 ## Continuity
 
@@ -88,13 +88,13 @@ Continuity (or "smoothness") is a measure of how smoothly one polynomial connect
 There can be some physical intuition here, because if you imagine a tangent vector moving along the spline, $C^1$ continuity implies it moving at a continuous speed (the first derivative of distance with respect to time). Notably, there is no abrupt change of speed **at the join** in particular, because before the join, we're on a smooth polynomial anyway. $C^2$ continuity would imply no sudden change of acceleration at the join, and so on. The lovely video by Freya Holmér on [the continuity of splines](https://www.youtube.com/watch?v=jvPPXbo87ds) beautifully explains and animates continuity measures, including other ones, like geometric continuity which we won't get into here.
 
 In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at the joins, and implies that the lower ( $(n-1 ... 0)^{th}$) derivatives also exist and are continuous. A higher $n$ gives us a smoother curve.
-{% image "Pasted image 20240618150758.png","Curves with different continuities and their derivatives.", true %}
+{% image "Pasted image 20240618150758.png","Fig 4: Curves with different continuities and their derivatives.", true %}
 
 ## Basis functions
 
 I want to touch on the intuition behind basis functions before we jump into B-splines. We mentioned that control points affect the geometric shape of the curve, but how? They do this by using their corresponding basis function. The influence or "pull" that a control point has is determined by it's basis function, and there are as many basis functions as there are control points. A widely spread out basis function for a specific control point would imply that moving the control point can affect a larger part of the curve. The animation below represents this quite well.
 
-{% image "b_spline_influence.gif","The colored parts on the curve mark the part of the B-spline that the highlighted control point has influence over. The magnitude and extent of this influence is determined by the basis function.", true %}
+{% image "b_spline_influence.gif","Fig 5: The colored parts on the curve mark the part of the B-spline that the highlighted control point has influence over. The magnitude and extent of this influence is determined by the basis function.", true %}
 
 I found that the [Scipy docs on B spline basis functions](https://docs.scipy.org/doc/scipy/tutorial/interpolate/splines_and_polynomials.html#b-spline-basis-elements) are also a useful read!
 
@@ -133,7 +133,7 @@ $$
 $$
 
 Plotting the functions influencing each control point, we can see the cubic B-spline basis functions look like this ([graph on desmos](https://www.desmos.com/calculator/ubtrhyjn0m)):
-{% image "Pasted image 20240617111409.png","Cubic spline basis functions for 4 control points, for t ∈ [0,1]. In the graph, the variable x refers to t.", true %}
+{% image "Pasted image 20240617111409.png","Fig 6: Cubic spline basis functions for 4 control points, for t ∈ [0,1]. In the graph, the variable x refers to t.", true %}
 
 These represent the influences of the 4 control points throughout one cubic piece of a spline. You can see the influence of the control points on the _whole_ spline in the animated figure in the [basis functions](#basis-functions) section.
 
@@ -253,7 +253,7 @@ u_values = np.linspace(knots[degree], knots[-degree - 1], 100)
 evaluate_spline(control_points, knots, u_values)
 ```
 
-{% image "uniform_knot_bspline.png", "(top) Basis functions produced from a uniform knot vector. Note that they are all just shifted copies of each other, and have the same local form as Fig X. (bottom) The resultant B-spline fit.", true %}
+{% image "uniform_knot_bspline.png", "Fig 7: (top) Basis functions produced from a uniform knot vector. Note that they are all just shifted copies of each other, and have the same local form as Fig 6. (bottom) The resultant B-spline fit.", true %}
 
 ### Open uniform B-splines
 
@@ -263,7 +263,7 @@ To make the spline also go _through_ the first and last points, we can modify ou
 
 This is done via "knot clamping", where the first and last values of a uniform knot vector are just repeated. Note again, that only the relative spacing between the knots and not the knot values itself influence the shape of the basis functions.
 
-If knot values are bought closer, this brings the curve closer to the associated control point. If the values are _repeated_, for each repetition, the degree of continuity is reduced for the knot value. In this case, repeating the value $k$ more times makes the curve **discontinuous** at the start and the end (going from $C^2 \rightarrow C^1 \rightarrow C^0 \rightarrow \text{discontinuous}$). In addition, all the local influence to the spline is attributed to these points, as seen in Fig X.
+If knot values are bought closer, this brings the curve closer to the associated control point. If the values are _repeated_, for each repetition, the degree of continuity is reduced for the knot value. In this case, repeating the value $k$ more times makes the curve **discontinuous** at the start and the end (going from $C^2 \rightarrow C^1 \rightarrow C^0 \rightarrow \text{discontinuous}$). In addition, all the local influence to the spline is attributed to these points, as seen in Fig 8.
 
 ```python
 control_points = np.array([[0, 0], [1, 2], [2, 0], [3, 2], [4, 0], [5, 0], [6, 1]])
@@ -274,7 +274,7 @@ u_values = np.linspace(knots[degree], knots[-degree - 1], 100)
 evaluate_spline(control_points, knots, u_values)
 ```
 
-{% image "openuniform.png","(top) Basis functions given an open uniform knot vector. Note that the first and last functions are 1 at the extremes and all other influences are 0 there, implying the start and end points have full influence on the curve. (bottom) Our B spline, with the curve going through the first and last points.", true %}
+{% image "openuniform.png","Fig 8: (top) Basis functions given an open uniform knot vector. Note that the first and last functions are 1 at the extremes and all other influences are 0 there, implying the start and end points have full influence on the curve. (bottom) Our B spline, with the curve going through the first and last points.", true %}
 
 ### Non-uniform B-splines
 
@@ -291,7 +291,7 @@ u_values = np.linspace(knots[degree], knots[-degree - 1], 1000)
 evaluate_spline(control_points, knots, u_values)
 ```
 
-{% image "nonuniform.png", "Basis functions and resultant spline for our non-uniform knot setup. We see that both the basis function and the associated control point have C0 continuity at that point, resulting in a sharp bend." %}
+{% image "nonuniform.png", "Fig 9: Basis functions and resultant spline for our non-uniform knot setup. We see that both the basis function and the associated control point have C0 continuity at that point, resulting in a sharp bend." %}
 
 # Closing
 
