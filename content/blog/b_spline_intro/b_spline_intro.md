@@ -236,7 +236,7 @@ def evaluate_spline(control_points, knots, evaluation_interval):
     plt.show()
 ```
 
-### Uniform B-splines
+### Uniform knot vectors
 
 Recall that in a cubic spline, each basis function is nonzero only in a fixed interval, not the whole range of the spline (the so called _compact support_, important for local control). For a cubic B-spline, this interval spans $k+1=4$ knots. This is the reason why B-splines have more knots than control points. Specifically, if we have $n+1$ control points (from $0..n$), then we'll have $n+k+2$ knots, where $k$ is the spline degree.
 
@@ -255,7 +255,7 @@ evaluate_spline(control_points, knots, u_values)
 
 {% image "uniform_knot_bspline.png", "Fig 7: (top) Basis functions produced from a uniform knot vector. Note that they are all just shifted copies of each other, and have the same local form as Fig 6. (bottom) The resultant B-spline fit.", true %}
 
-### Open uniform B-splines
+### Open uniform knot vectors
 
 As we move into unequal knot spacing territory, the splines are not necessarily $C^2$ continuous everywhere.
 
@@ -276,7 +276,7 @@ evaluate_spline(control_points, knots, u_values)
 
 {% image "openuniform.png","Fig 8: (top) Basis functions given an open uniform knot vector. Note that the first and last functions are 1 at the extremes and all other influences are 0 there, implying the start and end points have full influence on the curve. (bottom) Our B spline, with the curve going through the first and last points.", true %}
 
-### Non-uniform B-splines
+### Non-uniform knot vectors
 
 Here, unequal spacing can be done anywhere, not just at the ends. For example, if we want a sharp bend at the center, we could make it $C^0$ continuous (discontinuous first derivative) by repeating the central knot value $2$ more times. This is useful in cases where sharp changes are desired.
 
