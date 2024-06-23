@@ -88,7 +88,8 @@ Continuity (or "smoothness") is a measure of how smoothly one polynomial connect
 There can be some physical intuition here, because if you imagine a tangent vector moving along the spline, $C^1$ continuity implies it moving at a continuous speed (the first derivative of distance with respect to time). Notably, there is no abrupt change of speed **at the join** in particular, because before the join, we're on a smooth polynomial anyway. $C^2$ continuity would imply no sudden change of acceleration at the join, and so on. The lovely video by Freya Holmér on [the continuity of splines](https://www.youtube.com/watch?v=jvPPXbo87ds) beautifully explains and animates continuity measures, including other ones, like geometric continuity which we won't get into here.
 
 In general, $C^n$ continuity means that the $n^{th}$ derivative is continuous at the joins, and implies that the lower ( $(n-1 ... 0)^{th}$) derivatives also exist and are continuous. A higher $n$ gives us a smoother curve.
-{% image "Pasted image 20240618150758.png","Fig 4: Curves with different continuities and their derivatives.", true %}
+
+{% image "continuity.png","Fig 4: Curves with different continuities and their derivatives.", true %}
 
 ## Basis functions
 
