@@ -137,7 +137,7 @@ Plotting the functions influencing each control point, we can see the cubic B-sp
 
 These represent the influences of the 4 control points throughout one cubic piece of a spline. You can see the influence of the control points on the _whole_ spline in the animated figure in the [basis functions](#basis-functions) section.
 
-## Cox–de Boor recursion formula
+## Cox-de Boor recursion formula
 
 The Cox-de Boor formula tells us how to calculate the basis functions of a B-spline. The cool part about this algorithm is that it is trivial to use this to calculate the B-spline basis functions in higher dimensions.
 Let $\bold{c_i}$ be the control point vector, and $N_{i,k}$ be the corresponding basis function $i$ of a B-spline with degree $k$. We have $n+1$ control points and basis functions (going from $0..n$). Our spline $S$ will be a linear combination of these:
@@ -303,7 +303,7 @@ If you have any feedback, leave them with the blog title on [Issues · RohanGaut
 
 BibTeX:
 
-```
+```bibtex
 @article{rohan2024bspline,
   title   = "(KANs part 1) An introduction to B-splines",
   author  = "Gautam, Rohan",
