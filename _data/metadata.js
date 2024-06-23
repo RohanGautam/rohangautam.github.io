@@ -1,5 +1,5 @@
 module.exports = {
-	title: "Rohan's blog 🫘",
+	title: "Rohan's blog",
 	url: "https://rohangautam.github.io/",
 	language: "en",
 	description: "I am writing about my experiences and learnings.",
