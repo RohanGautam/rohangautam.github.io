@@ -7,6 +7,8 @@ tags:
   - simulation
 ---
 
+> Discussion on [hackernews](https://news.ycombinator.com/item?id=43924560).
+
 This is going to be a fun blog - we'll explore the intuition behind level sets, the Eikonal equation, and implement a speedy algorithm for solving this equation, called the fast sweeping method, in JAX.
 
 [[toc]]
