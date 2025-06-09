@@ -7,21 +7,23 @@ tags:
   - numerical_techniques
 ---
 
+> Discussion on [Hackernews](https://news.ycombinator.com/item?id=44215603).
+
 Numerical integration techniques are often used in a variety of domains where exact solutions are not available. In this blog, we'll look at a numerical integration technique called gaussian quadrature, specifically chebyshev-gauss quadrature. This is applicable for evaluating definite integrals over $[-1,1]$ and with a special functional form - we'll also look into how we can tweak an generic function over an arbitrary interval to fit this form.
 
 [[toc]]
 
-{% image "Pasted image 20250608152145.png","Fig 1: Comparing the accuracy of a basic integration technique (note log scale) with chebyshev-gauss quadrature", true %}
+{% image "image-1.png","Table 1: Comparing the accuracy and error% of a basic integration technique with chebyshev-gauss quadrature. The values have been rounded to five decimal places. For more details, check out the interactive notebook further in this blog post.", true %}
 
 # Gaussian quadrature
 
-At it's core, gaussian quadrature gives us a way to evaluate a definite integral of a function by using the function evaluations at special points called nodes, the exact location of which can vary depending on the technique used - we'll look at a specific example using chebyshev nodes later on. Here's the basic idea for a definite integral over $[-1,1]$, we'll extend this to an arbitrary interval $[a,b]$ later on. An integral of $f$ can be expressed as a weighted sum of $f$ evaluated at $n$ nodes :
+At it's core, gaussian quadrature gives us a way to evaluate a definite integral of a function by using the function evaluations at special points called nodes, the exact location of which can vary depending on the technique used - we'll look at a specific example using chebyshev nodes later on. Here's the basic idea for a definite integral over $[-1,1]$, we'll extend this to an arbitrary interval $[a,b]$ later on. An integral of $f$ can be approximated as a weighted sum of $f$ evaluated at $n$ nodes :
 
 $$
 \int_{-1}^{1}f(x)dx = \sum_{i=1}^{n}{w(x_i)f(x_i)}
 $$
 
-Elementary integration techniques work by approximating the function $f$ with a polynomial. If we sample the function at n points, we can fit a polynomial of degree n-1, and integrate _that_ to get the approximation. Basically this means that with n nodes, we can integrate polynomials with degree n-1. In contrast, Gaussian quadrature can estimate a polynomial of order 2n-1 with n nodes and another set of n weights. The weights are easily determined based on the specific technique, but now you need roughly half the number of function evaluations for an accurate integral approximation.
+Elementary integration techniques work by approximating the function $f$ with a polynomial. If we sample the function at $n$ points, we can fit a polynomial of degree $n-1$, and integrate _that_ to get the approximation. Basically this means that with $n$ nodes, we can integrate (exactly) polynomials with degree $n-1$. In contrast, Gaussian quadrature can integrate (also exactly) a polynomial of order $2n-1$ with $n$ nodes and another set of n weights. The weights are easily determined based on the specific technique, but now you need roughly half the number of function evaluations for a more accurate integral approximation. That is to say, with $n$ nodes, gaussian integration will approximate your function's integral with a higher order polynomial than a basic technique would - resulting in more accuracy.
 
 This is a great improvement in terms of numerical accuracy for the accuracy you get per function evaluation at a node. Gaussian quadrature does this by carefully selecting nodes - the nodes are given by the roots of an orthogonal polynomial function. These orthogonal polynomials act as a "basis", just like spline coefficients do for [spline fitting](https://rohangautam.github.io/blog/b_spline_intro/) (with the difference of global instead of local support). By the definition of orthogonality, these have an inner product (dot product in euclidean space) of zero with each other, and that simplifies the necessary calculations ([proof](https://math.stackexchange.com/questions/1877415/proving-exactness-of-gauss-legendre-integration-formula))[^1] .
 
@@ -66,7 +68,7 @@ This is my first time trying a [marimo notebook](https://marimo.io/). It reminds
 
 You can play around with the slider which controls the number of nodes used for integration. Changing it effects all other conencted cells, allowing you to compare the accuracy of the two integral approximation techniques. For this example, we integrate $\sin(x)$ from $0$ to $\pi$.
 
-<iframe src="https://marimo.app/l/8l6gjt" width="100%" height="500px"></iframe>
+<iframe src="https://marimo.app/l/uq8m3c" width="100%" height="500px"></iframe>
 
 # Parting thoughts
 
@@ -75,3 +77,10 @@ This is a cool numerical integration technique I thought I'd share. I used it in
 ---
 
 [^1]: The proof linked to stackoverflow is for when legendre polynomials are used to compute node locations (Gauss-Legendre integration). The proof is largely unchanged for Chebyshev-Gauss integration with a notable difference that the "weight function" (multiplied inside the integral) in the latter case is $1/(\sqrt{1-x^2})$, and $1$ for the prior case. This is why the functional form requirement for chebyshev-gauss has that term, as seen in the next section. The use of "weight function" inside the integral and "weight" in the summation term is confusing, I'll agree. This is why introductions to the chebyshev-gauss quadrature directly introduce it as a functional form requirement, as I've done here.
+
+---
+
+**EDITS**:
+
+1. Removed the initial plot comparing integration accuracy in log scale, replaced with a simpler table. It was pretty unintuitive and quite confusing. Thanks for pointing out - [actinum226](https://news.ycombinator.com/user?id=actinium226), [extrabajs](https://news.ycombinator.com/user?id=extrabajs), [mturmon](https://news.ycombinator.com/user?id=mturmon) and [rd11235](https://news.ycombinator.com/user?id=rd11235).
+2. Be more clear in the paragraph introducing gaussian quadrature. I previously mixed up terms like "expressed" and "approximated", and did not phrase clearly that the orthogonal polynomial enables estimating the integral of a polynomial of a degree $2n-1$ _exactly_. [tim-kt](https://news.ycombinator.com/user?id=tim-kt)
