@@ -83,4 +83,4 @@ This is a cool numerical integration technique I thought I'd share. I used it in
 **EDITS**:
 
 1. Removed the initial plot comparing integration accuracy in log scale, replaced with a simpler table. It was pretty unintuitive and quite confusing. Thanks for pointing out - [actinum226](https://news.ycombinator.com/user?id=actinium226), [extrabajs](https://news.ycombinator.com/user?id=extrabajs), [mturmon](https://news.ycombinator.com/user?id=mturmon) and [rd11235](https://news.ycombinator.com/user?id=rd11235).
-2. Be more clear in the paragraph introducing gaussian quadrature. I previously mixed up terms like "expressed" and "approximated", and did not phrase clearly that the orthogonal polynomial enables estimating the integral of a polynomial of a degree $2n-1$ _exactly_. [tim-kt](https://news.ycombinator.com/user?id=tim-kt)
+2. Be more clear in the paragraph introducing gaussian quadrature. I previously mixed up terms like "expressed" and "approximated", and did not phrase clearly that the orthogonal polynomial enables estimating the integral of a polynomial of a degree $2n-1$ _exactly_. Thanks [tim-kt](https://news.ycombinator.com/user?id=tim-kt)!
